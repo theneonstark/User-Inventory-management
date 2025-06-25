@@ -1,0 +1,5 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/event/public_html/user
+    - /bin/cp -R * $DEPLOYPATH
