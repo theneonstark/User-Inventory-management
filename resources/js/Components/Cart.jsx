@@ -17,7 +17,7 @@ const CartPage = ({ cartItems }) => {
   const updateQuantity = async (index, newQuantity) => {
     const updatedCart = [...cart];
     const maxQuantity = updatedCart[index]?.product?.stock_quantity || 0;
-    const quantity = Math.max(1, Math.min(maxQuantity, newQuantity)); // Ensure quantity stays within bounds
+    const quantity = Math.max(0.1, Math.min(maxQuantity, newQuantity)); // Ensure quantity stays within bounds
     updatedCart[index].quantity = quantity;
     setCart(updatedCart);
 
@@ -25,7 +25,7 @@ const CartPage = ({ cartItems }) => {
       const API_URL =
         import.meta.env.VITE_ENVIRONMENT === "production"
           ? `${import.meta.env.VITE_API_BASE_URL}/cart/update`
-          : "http://127.0.0.1:8001/cart/update";
+          : "http://127.0.0.1:8000/cart/update";
 
       await axios.put(API_URL, {
         product_id: cart[index]?.product_id,
@@ -107,11 +107,12 @@ const CartPage = ({ cartItems }) => {
                 {/* Quantity and Actions */}
                 <div className="flex items-center gap-4">
                   <Input
-                    type="text"
+                    type="number"
+                    step="0.1" // Allows decimal increments (e.g., 0.1, 0.2, etc.)
                     value={item?.quantity || 1}
-                    onChange={(e) => updateQuantity(index, parseInt(e.target.value) || 1)}
+                    onChange={(e) => updateQuantity(index, parseFloat(e.target.value) || 1)}
                     className="w-20 p-2 rounded-lg shadow-md border-indigo-300 dark:border-gray-600 focus:ring-2 focus:ring-indigo-500 transition-all duration-300 text-center bg-indigo-50 dark:bg-gray-700"
-                    min="1"
+                    min="0.1" // Minimum value (adjust as needed)
                     max={item?.product?.stock_quantity || 1}
                     disabled={item?.product?.stock_quantity === 0}
                   />

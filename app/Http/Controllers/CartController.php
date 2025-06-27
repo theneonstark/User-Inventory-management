@@ -6,14 +6,20 @@ use App\Models\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class CartController extends Controller {
-    public function store(Request $request) {
+class CartController extends Controller
+{
+    public function store(Request $request)
+    {
         $request->validate([
             'product_id' => 'required|exists:products,id',
-            // 'quantity' => 'required|numeric|min:1'
+            // 'quantity' => 'required|integer|min:1'
         ]);
 
-        $user = Auth::user(); // Assuming user is authenticated
+        $user = Auth::user();
+
+        if (!$user) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
 
         // Check if product already exists in cart
         $cartItem = Cart::where('user_id', $user->id)
@@ -36,13 +42,19 @@ class CartController extends Controller {
         return response()->json(['message' => 'Product added to cart successfully'], 201);
     }
 
-    public function updateQuantity(Request $request) {
+    public function updateQuantity(Request $request)
+    {
+        
         $request->validate([
             'product_id' => 'required|exists:products,id',
-            // 'quantity' => 'required|numeric|min:1'
+            // 'quantity' => 'required|integer|min:1'
         ]);
 
-        $user = Auth::user(); // Assuming user is authenticated
+        $user = Auth::user();
+
+        if (!$user) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
 
         // Find cart item
         $cartItem = Cart::where('user_id', $user->id)
@@ -59,12 +71,17 @@ class CartController extends Controller {
         return response()->json(['message' => 'Item not found in cart'], 404);
     }
 
-    public function removeItem(Request $request) {
+    public function removeItem(Request $request)
+    {
         $request->validate([
-            'product_id' => 'required'
+            'product_id' => 'required|exists:products,id'
         ]);
 
-        $user = Auth::user(); // Assuming user is authenticated
+        $user = Auth::user();
+
+        if (!$user) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
 
         // Find and remove item
         $cartItem = Cart::where('user_id', $user->id)
