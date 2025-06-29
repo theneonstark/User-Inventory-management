@@ -46,7 +46,7 @@ const CartPage = ({ cartItems }) => {
       const API_URL =
         import.meta.env.VITE_ENVIRONMENT === "production"
           ? `${import.meta.env.VITE_API_BASE_URL}/cart/remove`
-          : "http://127.0.0.1:8001/cart/remove";
+          : "http://127.0.0.1:8000/cart/remove";
 
       await axios.delete(API_URL, {
         params: { product_id: cart[index]?.product_id },

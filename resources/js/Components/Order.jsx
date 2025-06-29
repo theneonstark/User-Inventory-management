@@ -104,7 +104,7 @@ export default function OrderPage({ id }) {
         });
         const endpoint = import.meta.env.VITE_ENVIRONMENT === "production" 
         ? `${import.meta.env.VITE_API_BASE_URL}/Userlogin`
-        : "http://127.0.0.1:8001/Userlogin";
+        : "http://127.0.0.1:8000/Userlogin";
 
         // Redirect to /home after the popup
         Inertia.visit(endpoint);
@@ -159,7 +159,7 @@ export default function OrderPage({ id }) {
                       min: 1,
                       required: "Quantity is required",
                     })}
-                    onChange={(e) => handleProductChange(index, "quantity", parseInt(e.target.value) || 1)}
+                    onChange={(e) => handleProductChange(index, "quantity", parseFloat(e.target.value) || 1)}
                     className="w-20 text-center"
                   />
                   {error && <p className="text-red-500 text-sm">{error}</p>}

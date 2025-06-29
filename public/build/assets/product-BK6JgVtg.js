@@ -1,1 +1,0 @@
-import{a as t}from"./app-DBEXB0bx.js";const e="https://ims.nikatby.in/user/public/api/products",s="https://ims.nikatby.in/user/public/api/categories",c={getAllProducts:async()=>t.get(e),getCategories:async()=>t.get(s),getProductById:async o=>{try{return(await t.get(`${e}/${o}`)).data}catch(r){throw console.error(`Error fetching order ${orderId}:`,r),r}}};export{c as p};
